@@ -97,17 +97,32 @@
         nameInput.style.backgroundColor = '#232323';
         nameInput.style.color = '#ccc';
         nameInput.style.boxSizing = 'border-box';
-
         nameInput.style.fontFamily = 'Verdana,Helvetica,Arial,sans-serif';
         nameInput.style.fontSize = '14px';
 
+        function replaceUsername(newUsername) {
+            localStorage.setItem('newUsername', newUsername);
+
+            const onlineList = document.getElementById('onlinelist');
+            if (onlineList) {
+                const ddElements = onlineList.getElementsByTagName('dd');
+                for (const dd of ddElements) {
+                    const aElements = dd.getElementsByTagName('a');
+                    for (const a of aElements) {
+                        if (a.textContent === localStorage.getItem('originalUsername')) {
+                            a.textContent = newUsername;
+                        }
+                    }
+                }
+            }
+        }
+
         nameInput.oninput = () => {
-            localStorage.setItem('newUsername', nameInput.value);
             replaceUsername(nameInput.value);
         };
 
-
         document.body.appendChild(nameInput);
+        replaceUsername(nameInput.value);
 
         const closeButton = document.createElement('button');
         closeButton.textContent = 'Close';
